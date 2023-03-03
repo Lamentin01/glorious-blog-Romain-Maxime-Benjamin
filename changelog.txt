@@ -17,3 +17,9 @@
 ### Fixed 
 
 - Faille possibilité de changer la valeur du cookie pour changer de session, corrigé en créant un clé dans un fichier secret, modification de la secret_key de app.py
+
+## [1.5] - 03-03-2023 Maxime Lemaitre
+
+### Add
+
+- Ajout du "Ratelimit" dans auth.py pour limiter le nombre de tentatives de connections pendant une certaine période. Cela limite le brute Force
