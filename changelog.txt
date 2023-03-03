@@ -23,3 +23,9 @@
 ### Add
 
 - Ajout du "Ratelimit" dans auth.py pour limiter le nombre de tentatives de connections pendant une certaine période. Cela limite le brute Force
+
+## [1.6] - 03-03-2023 Romain Charrat
+
+### Fixed
+
+- Faille au niveau des injections SQL, utilisation de requète paramétrées pour éviter la prise en compte des doubles quotes par le language SQL.
