@@ -61,6 +61,10 @@ python src/main.py
 ```bash
 python --app src/app.py --debug run
 ```
+## Requirement
+
+- Create a fill .env in the folder src with the following line :
+SECRET_KEY="your_secret_key"
 
 ## WARNING
 
