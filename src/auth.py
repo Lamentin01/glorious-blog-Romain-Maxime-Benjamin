@@ -4,10 +4,11 @@
 import functools
 import hashlib
 import flask
+from ratelimit import limits
 
 from db import get_db
 
-
+THIRTEEN_MINUTES = 1800
 bp = flask.Blueprint(  # declare new blueprint
     name='auth',
     import_name=__name__,
@@ -55,6 +56,7 @@ def register():
 
 
 @bp.route('/login', methods=('GET', 'POST'))
+@limits(calls=10, period = THIRTEEN_MINUTES)
 def login():
     """Login view. Answer a GET request with the login form.
     Attach user id if POST request occurs and return user to index
