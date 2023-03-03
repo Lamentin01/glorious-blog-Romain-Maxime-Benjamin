@@ -43,8 +43,8 @@ def create():
     Returns (str): create view or redirect to index page
     """
     if flask.request.method == 'POST':
-        title = flask.request.form['title']
-        body = flask.request.form['body']
+        title = flask.escape(flask.request.form['title'])
+        body = flask.escape(flask.request.form['body'])
         error = None
 
         if not title:
@@ -110,8 +110,8 @@ def update(post_id):
     post = get_post(post_id)
 
     if flask.request.method == 'POST':
-        title = flask.request.form['title']
-        body = flask.request.form['body']
+        title = flask.escape(flask.request.form['title'])
+        body = flask.escape(flask.request.form['body'])
         error = None
 
         if not title:
