@@ -41,3 +41,9 @@
 ### Replace
 
 - Mise en place d'un systeme de session (Flask) qui remplace les cookies, les valeurs des sessions sont chiffrées par une clé privé. 
+
+## [v_Final]
+
+### add
+
+- Fusion de toutes les versions de programme, pour en avoir une version final ayant le correctif sur toutes les vulnérabilités trouvées
