@@ -41,6 +41,8 @@
 ### Replace
 
 - Mise en place d'un systeme de session (Flask) qui remplace les cookies, les valeurs des sessions sont chiffrées par une clé privé. 
+- Créer un fichier .env dans le dossier src contenant la ligne suivante : 
+SECRET_KEY="your_secret_key"
 
 ## [v_Final] - 03-03-2023
 
