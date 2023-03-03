@@ -2,11 +2,16 @@
 """Declare a Flask blueprint to register authentication views.
 """
 import functools
-
+import hashlib
 import flask
-from db import get_db
+from ratelimit import limits
 from flask import session
+#from flask_limiter import Limiter
+#from flask_limiter.util import get_remote_address
 
+from db import get_db
+
+THIRTEEN_MINUTES = 1800
 
 bp = flask.Blueprint(  # declare new blueprint
     name='auth',
@@ -14,6 +19,7 @@ bp = flask.Blueprint(  # declare new blueprint
     template_folder='templates',
     url_prefix='/auth',
 )
+
 
 
 @bp.route('/register', methods=('GET', 'POST'))
@@ -36,10 +42,12 @@ def register():
             error = 'Password is required.'
 
         if error is None:
+            # Hash the password using SHA-512
+            hashed_password = hashlib.sha512(password.encode()).hexdigest()
             try:
                 db.execute(
                     f'INSERT INTO user (username, password) VALUES '
-                    f'("{username}", "{password}")'
+                    f'(?,?)',(username, hashed_password)
                 )
                 db.commit()
             except db.IntegrityError:  # catch this specific exception
@@ -53,6 +61,8 @@ def register():
 
 
 @bp.route('/login', methods=('GET', 'POST'))
+#@limiter.limit("3 per minute")
+@limits(calls=10, period = THIRTEEN_MINUTES)
 def login():
     """Login view. Answer a GET request with the login form.
     Attach user id if POST request occurs and return user to index
@@ -66,19 +76,19 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            f'SELECT * FROM user WHERE username = "{username}"'
+            f'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
 
         if user is None:
             error = 'Incorrect username.'
-        elif user['password'] != password:
-            error = 'Incorrect password.'
+        else:
+            hashed_password = hashlib.sha512(password.encode()).hexdigest()
+            if user['password'] != hashed_password:
+                error = 'Incorrect password.'
 
         if error is None:
-            
             # generate redirect response, attach authentication cookie on it
             # and return the response objectTypeError: Expected bytes
-            
             response = flask.redirect(flask.url_for('index'))
             session.clear()
             session['user_id'] = str(user['id'])
@@ -97,7 +107,6 @@ def logout():
     Returns: redirect to index page
     """
     response = flask.redirect(flask.url_for('index'))
-    
     session.clear()
     return response
 
