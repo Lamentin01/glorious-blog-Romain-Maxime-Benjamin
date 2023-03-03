@@ -4,8 +4,8 @@
 import functools
 
 import flask
-
 from db import get_db
+from flask import session
 
 
 bp = flask.Blueprint(  # declare new blueprint
@@ -75,10 +75,14 @@ def login():
             error = 'Incorrect password.'
 
         if error is None:
+            
             # generate redirect response, attach authentication cookie on it
             # and return the response objectTypeError: Expected bytes
+            
             response = flask.redirect(flask.url_for('index'))
-            response.set_cookie('user_id', str(user['id']))
+            session.clear()
+            session['user_id'] = str(user['id'])
+            
             return response
 
         flask.flash(error, 'error')
@@ -93,7 +97,8 @@ def logout():
     Returns: redirect to index page
     """
     response = flask.redirect(flask.url_for('index'))
-    response.delete_cookie('user_id')
+    
+    session.clear()
     return response
 
 
@@ -101,7 +106,7 @@ def logout():
 def load_logged_in_user():
     """If user is currently connected, attach user object to context.
     """
-    user_id = flask.request.cookies.get('user_id')
+    user_id = session.get('user_id')
 
     if user_id is None:
         flask.g.user = None
