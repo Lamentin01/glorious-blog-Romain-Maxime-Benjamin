@@ -11,3 +11,9 @@
 ### Fixed
 
 - Faille de mot de passe non haché dans la base de données corrigé, en hachant le mot de passe dans auth.py avec du SHA512 pour se register, puis lors de la vérification pour se login
+
+## [1.4] - 03-03-2023 Benjamin Brunelliere
+
+### Fixed 
+
+- Faille possibilité de changer la valeur du cookie pour changer de session, corrigé en créant un clé dans un fichier secret, modification de la secret_key de app.py
