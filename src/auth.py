@@ -2,7 +2,7 @@
 """Declare a Flask blueprint to register authentication views.
 """
 import functools
-
+import hashlib
 import flask
 
 from db import get_db
@@ -36,10 +36,12 @@ def register():
             error = 'Password is required.'
 
         if error is None:
+            # Hash the password using SHA-512
+            hashed_password = hashlib.sha512(password.encode()).hexdigest()
             try:
                 db.execute(
                     f'INSERT INTO user (username, password) VALUES '
-                    f'("{username}", "{password}")'
+                    f'("{username}", "{hashed_password}")'
                 )
                 db.commit()
             except db.IntegrityError:  # catch this specific exception
@@ -71,8 +73,10 @@ def login():
 
         if user is None:
             error = 'Incorrect username.'
-        elif user['password'] != password:
-            error = 'Incorrect password.'
+        else:
+            hashed_password = hashlib.sha512(password.encode()).hexdigest()
+            if user['password'] != hashed_password:
+                error = 'Incorrect password.'
 
         if error is None:
             # generate redirect response, attach authentication cookie on it
