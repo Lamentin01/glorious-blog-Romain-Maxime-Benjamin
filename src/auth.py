@@ -39,7 +39,7 @@ def register():
             try:
                 db.execute(
                     f'INSERT INTO user (username, password) VALUES '
-                    f'("{username}", "{password}")'
+                    f'(?, ?)', (username, password)
                 )
                 db.commit()
             except db.IntegrityError:  # catch this specific exception
@@ -66,7 +66,7 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            f'SELECT * FROM user WHERE username = "{username}"'
+            f'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
 
         if user is None:

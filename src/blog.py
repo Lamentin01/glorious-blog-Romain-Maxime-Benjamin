@@ -56,7 +56,7 @@ def create():
             db = get_db()
             db.execute(
                 'INSERT INTO post (title, body, author_id)'
-                f' VALUES ("{title}", "{body}", {flask.g.user["id"]})'
+                f' VALUES (?, ?, {flask.g.user["id"]})', (title, body)
             )
             db.commit()
             return flask.redirect(flask.url_for('blog.index'))
@@ -122,8 +122,8 @@ def update(post_id):
         else:
             db = get_db()
             db.execute(
-                f'UPDATE post SET title = "{title}", body = "{body}"'
-                f' WHERE id = {post_id}'
+                f'UPDATE post SET title = ?, body = ?'
+                f' WHERE id = {post_id}', (title, body)
             )
             db.commit()
             return flask.redirect(flask.url_for('blog.index'))
