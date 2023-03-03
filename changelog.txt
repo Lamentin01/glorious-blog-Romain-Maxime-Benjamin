@@ -29,3 +29,9 @@
 ### Fixed
 
 - Faille au niveau des injections SQL, utilisation de requète paramétrées pour éviter la prise en compte des doubles quotes par le language SQL.
+
+## [1.7] - 03-03-2023 Maxime Lemaitre
+
+### Fixed
+
+- Correction de la faille CSRF en ajoutant la génération de token sur chaque cookies dans app.py, puis en vérifiant celui-ci dans chaque méthode "POST" dans les fichiers HTML
