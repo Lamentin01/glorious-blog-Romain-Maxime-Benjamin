@@ -35,3 +35,9 @@
 ### Fixed
 
 - Correction de la faille CSRF en ajoutant la génération de token sur chaque cookies dans app.py, puis en vérifiant celui-ci dans chaque méthode "POST" dans les fichiers HTML
+
+## [1.8] - 03-03-2023 Benjamin Brunelliere
+
+### Replace
+
+- Mise en place d'un systeme de session (Flask) qui remplace les cookies, les valeurs des sessions sont chiffrées par une clé privé. 
