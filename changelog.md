@@ -47,3 +47,7 @@
 ### add
 
 - Fusion de toutes les versions de programme, pour en avoir une version final ayant le correctif sur toutes les vulnérabilités trouvées
+
+## [v_Final] - 03-03-2023 Benjamin Brunelliere
+
+- Mise à jour du Css et ajout d'un media dans le dossier src
